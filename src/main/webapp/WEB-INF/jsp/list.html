@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<table width="100%" style="float: top; margin-top: 0px;margin-right: 10px">
+    <tr>
+        <td>Worker</td>
+        <td>Count of calls</td>
+    </tr>
+    <tr th:each="stat : ${statistic}">
+        <td th:text="${stat[0]+' '+stat[1]+' '+stat[2]}"></td>
+        <td th:text="${stat[3]}"></td>
+    </tr>
+</table>
+</br>
+<div style="margin-top: 30px">
+    <form th:action="@{/list}" method="GET">
+        <input type="radio" name="calls" id="incomingCall" th:value="incomingCall">incoming
+        calls<br>
+        <input type="radio" name="calls" id="outgoingCall" th:value="outgoingCall">outgoing
+        calls<br>
+        <select id="period" name="period">
+            <option th:value="off">select period</option>
+            <option th:value="day">day</option>
+            <option th:value="week">week</option>
+            <option th:value="month">month</option>
+        </select>
+        <br/>
+        <button type="submit" style="margin-top: 3px">Search</button>
+    </form>
+</div>
+<br/>
+<div style="margin-top: 30px">
+    <form th:action="@{/list}" method="POST">
+        <p>Введите номер : <input type="text" name="phoneNumber"></input></p>
+        <p>Имя клиента : <input type="text" name="firstName"></p>
+        <p>Отчество клиента : <input type="text" name="middleName"></p>
+        <p>Фамилия клиента : <input type="text" name="secondName"></p>
+        <p><select id="createdcall" name="createdcall">
+            <option th:value="incomingCall">incoming call</option>
+            <option th:value="outgoingCall">outgoing call</option>
+        </select></p>
+        <p>Комментарий : <textarea name="comment"></textarea></p>
+        <p>Сотрудник :
+            <select id="workers" name="workers">
+                <option th:each="worker : ${workers}" th:value="${worker.id}" th:text="${worker.firstName
+                + ' '+ worker.middleName+' '+worker.secondName}">
+                </option>
+            </select></p>
+        <p>
+            <input type="datetime-local" name="date"></p>
+        <br/>
+        <button type="submit" style="margin-top: 3px">Save</button>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var selPeriod = "[[${selPeriod}]]";
+        var selCall = "[[${selCall}]]";
+        document.getElementById('period').value = selPeriod;
+        document.getElementById(selCall).checked = true;
+    })
+</script>
+</body>
+</html>
